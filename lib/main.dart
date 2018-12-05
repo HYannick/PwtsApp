@@ -56,6 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _pauseCounter() {
+    timer.cancel();
+  }
+
   void _stopCounter() {
     timer.cancel();
     setState(() {
@@ -98,12 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('$_counter'),
+            RaisedButton(
+                child: Text('pause counter'), onPressed: _pauseCounter),
             RaisedButton(child: Text('stop counter'), onPressed: _stopCounter)
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: (timer != null && timer.isActive) ? null : _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
