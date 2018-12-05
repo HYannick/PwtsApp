@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Positioned.fill(
               child: Image.asset(
-            'images/wc__bg.jpg',
+            'assets/wc__bg.jpg',
             fit: BoxFit.cover,
           )),
           Column(
@@ -97,25 +97,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 100.0,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage('images/splash_brush.png'),
+                                image: AssetImage('assets/splash_brush.png'),
                                 fit: BoxFit.cover)),
                         child: Center(
                             child: Text('1',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20.0,
+                                    fontFamily: 'CN Rocks',
                                     fontWeight: FontWeight.bold)))),
                     Container(
                         width: 100.0,
                         height: 100.0,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage('images/splash_brush.png'),
+                                image: AssetImage('assets/splash_brush.png'),
                                 fit: BoxFit.cover)),
                         child: Center(
                             child: Text(
                           '2',
                           style: TextStyle(
+                              fontFamily: 'CN Rocks',
                               color: Colors.white,
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold),
