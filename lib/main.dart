@@ -48,6 +48,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Timer timer;
+
   void _incrementCounter() {
     timer = Timer.periodic(Duration(seconds: 5), (_) {
       setState(() {
@@ -76,37 +77,69 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('$_counter'),
-            RaisedButton(
-                child: Text('pause counter'), onPressed: _pauseCounter),
-            RaisedButton(child: Text('stop counter'), onPressed: _stopCounter)
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          Positioned.fill(
+              child: Image.asset(
+            'images/wc__bg.jpg',
+            fit: BoxFit.cover,
+          )),
+          Column(
+            children: <Widget>[
+              Text('Degré'),
+              Container(
+                height: 50.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Container(
+                        width: 100.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('images/splash_brush.png'),
+                                fit: BoxFit.cover)),
+                        child: Center(
+                            child: Text('1',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold)))),
+                    Container(
+                        width: 100.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('images/splash_brush.png'),
+                                fit: BoxFit.cover)),
+                        child: Center(
+                            child: Text(
+                          '2',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold),
+                        )))
+                  ],
+                ),
+              ),
+              Text('Nombre de mouvements'),
+              Text('Intervals'),
+            ],
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('$_counter'),
+                RaisedButton(
+                    child: Text('pause counter'), onPressed: _pauseCounter),
+                RaisedButton(
+                    child: Text('stop counter'), onPressed: _stopCounter)
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (timer != null && timer.isActive) ? null : _incrementCounter,
