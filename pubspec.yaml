@@ -43,6 +43,9 @@ flutter:
     - assets/splash_brush.png
     - assets/splash_brush.svg
     - assets/brush_trace.svg
+    - assets/brush_trace_top.svg
+    - assets/brush_trace_bottom.svg
+    - assets/go_bg.svg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

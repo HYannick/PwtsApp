@@ -32,7 +32,7 @@ class Stances {
 
   Map<String, dynamic> getRandomStance({@required stances}) {
     Random random = Random();
-    int i = random.nextInt(stancesList.length - 1);
+    int i = random.nextInt(stances.length - 1);
     return stances[i];
   }
 }

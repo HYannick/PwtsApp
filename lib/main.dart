@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pwts_app/components/options-list.dart';
+import 'package:pwts_app/resources/stances.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -28,26 +31,39 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   static Color mainBrown = Color.fromRGBO(41, 23, 34, 1.0);
+  Map<String, dynamic> selectedStance;
   TextStyle titleStyle =
       TextStyle(color: mainBrown, fontSize: 20.0, fontFamily: 'CN Rocks');
   Map<String, dynamic> options = {
     "degrees": [1, 2],
     "nbStances": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-    "nbIntervals": [5, 10, 15, 20, 25],
+    "intervals": [1, 2, 3, 4, 5, 10],
+  };
+
+  Map<String, dynamic> selectedOptions = {
+    "degree": 1,
+    "nbStances": 5,
+    "intervals": 1,
   };
 
   Timer timer;
 
-  void _incrementCounter() {
-    timer = Timer.periodic(Duration(seconds: 5), (_) {
-      setState(() {
-        _counter++;
-      });
-    });
-  }
+  void _initStances() {
+    final stances = Stances();
+    final filteredStances =
+        stances.getStancesByDegree(degree: selectedOptions['degree']);
 
-  void _pauseCounter() {
-    timer.cancel();
+    timer =
+        Timer.periodic(Duration(seconds: selectedOptions['intervals']), (_) {
+      if (_counter < selectedOptions['nbStances']) {
+        setState(() {
+          selectedStance = stances.getRandomStance(stances: filteredStances);
+          _counter++;
+        });
+      } else {
+        _stopCounter();
+      }
+    });
   }
 
   void _stopCounter() {
@@ -57,11 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void onSelectedItem(int index, List list) {
-    print('selectedIndex');
-    print(index);
-    print('list');
-    print(list);
+  void onSelectedItem(int index, List list, String field) {
+    selectedOptions[field] = list[index];
   }
 
   @override
@@ -74,116 +87,110 @@ class _MyHomePageState extends State<MyHomePage> {
             'assets/wc__bg.jpg',
             fit: BoxFit.cover,
           )),
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SvgPicture.asset(
-                  'assets/brush_trace.svg',
-                  color: mainBrown,
-                  width: MediaQuery.of(context).size.width,
-                  height: 50.0,
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                title: new Text(
+                  "詠春",
+                  style: TextStyle(color: Colors.white, fontSize: 35.0),
                 ),
-                OptionsList(
-                  list: options['degrees'],
-                  title: 'Degré',
-                  onSelectedItem: onSelectedItem,
+                backgroundColor: Colors.transparent,
+                flexibleSpace: Container(
+                  width: 50.0,
+                  child: Transform(
+                    transform: Matrix4.identity()
+                      ..translate(-60.0, -30.0)
+                      ..scale(1.7),
+                    child: SvgPicture.asset(
+                      'assets/brush_trace.svg',
+                      width: 50.0,
+                      height: 80.0,
+                      color: mainBrown,
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                OptionsList(
-                  list: options['nbStances'],
-                  title: 'Nombre de '
-                      'mouvements',
-                  onSelectedItem: onSelectedItem,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                OptionsList(
-                  list: options['nbIntervals'],
-                  title: 'Intervals',
-                  onSelectedItem: onSelectedItem,
-                ),
-              ],
-            ),
+                elevation: 0.0,
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  OptionsList(
+                    list: options['degrees'],
+                    title: 'Degré',
+                    field: 'degree',
+                    onSelectedItem: onSelectedItem,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  OptionsList(
+                    list: options['nbStances'],
+                    title: 'Nombre de mouvements',
+                    field: 'nbStances',
+                    onSelectedItem: onSelectedItem,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  OptionsList(
+                    list: options['intervals'],
+                    title: 'Temps',
+                    field: 'intervals',
+                    onSelectedItem: onSelectedItem,
+                  ),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  GestureDetector(
+                    onTap: _initStances,
+                    child: Center(
+                      child: SizedBox(
+                        width: 200.0,
+                        height: 200.0,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                                child: SvgPicture.asset(
+                              'assets/go_bg'
+                                  '.svg',
+                              fit: BoxFit.cover,
+                              color: mainBrown,
+                            )),
+                            Center(
+                              child: Text(
+                                'GO',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 120.0,
+                                    fontFamily: 'CN takeway'),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ]),
+              )
+            ],
           ),
         ],
       ),
-    );
-  }
-}
-
-class OptionsList extends StatefulWidget {
-  static Color mainBrown = Color.fromRGBO(41, 23, 34, 1.0);
-  final String title;
-  final List list;
-  final Function onSelectedItem;
-  OptionsList({this.title, this.list, @required this.onSelectedItem});
-
-  @override
-  OptionsListState createState() {
-    return new OptionsListState();
-  }
-}
-
-class OptionsListState extends State<OptionsList> {
-  int _selectedItem = 0;
-
-  TextStyle titleStyle = TextStyle(
-      color: OptionsList.mainBrown, fontSize: 20.0, fontFamily: 'CN Rocks');
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(left: 70.0),
-          child: Text(
-            widget.title,
-            style: titleStyle,
+      floatingActionButton: RawMaterialButton(
+          child: Container(
+            width: 80.0,
+            height: 80.0,
+            child: SvgPicture.asset(
+              'assets/splash_brush.svg',
+              fit: BoxFit.cover,
+              color: Colors.redAccent,
+            ),
           ),
-        ),
-        Container(
-            height: 70.0,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.list.length,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedItem = index;
-                      });
-                      widget.onSelectedItem(_selectedItem, widget.list);
-                    },
-                    child: Container(
-                        width: 130.0,
-                        height: 130.0,
-                        margin: EdgeInsets.only(left: index == 0 ? 70.0 : 0.0),
-                        child: Stack(children: <Widget>[
-                          Positioned.fill(
-                              child: SvgPicture.asset(
-                            'assets/splash_brush.svg',
-                            fit: BoxFit.cover,
-                            color: _selectedItem == index
-                                ? Colors.redAccent
-                                : OptionsList.mainBrown,
-                          )),
-                          Center(
-                              child: Text('${widget.list[index]}',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontFamily: 'CN Rocks',
-                                      fontWeight: FontWeight.bold)))
-                        ])),
-                  );
-                })),
-      ],
+          onPressed: () {
+            print('other page stances');
+          }),
     );
   }
 }

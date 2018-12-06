@@ -40,7 +40,7 @@ void main() {
 
     test('Should select a random stance', () {
       final selectedStance = stances.getRandomStance(
-          stances: stances.getStancesByStyle(degree: 2, style: 'daisihing'));
+          stances: stances.getStancesByDegree(degree: 1));
       print(selectedStance);
     });
   });
