@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances.dart';
 
 void main() {
@@ -16,24 +17,22 @@ void main() {
     });
 
     test('Should have 4 stances on first degree', () {
-      final List<Map<String, dynamic>> stancesList =
-          stances.getStancesByDegree(degree: 1);
+      final List<Stance> stancesList = stances.getStancesByDegree(degree: 1);
       expect(stancesList.length, 4);
     });
 
     test('Should have Sifu style', () {
-      final List<Map<String, dynamic>> stancesList =
-          stances.getStancesByStyle(style: 'sifu');
+      final List<Stance> stancesList = stances.getStancesByStyle(style: 'sifu');
       expect(stancesList.length, 7);
     });
 
     test('Should have 7 Sifu style for second degree', () {
-      final List<Map<String, dynamic>> stancesList =
+      final List<Stance> stancesList =
           stances.getStancesByStyle(degree: 2, style: 'sifu');
       expect(stancesList.length, 7);
     });
     test('Should have 4 daisihing style for first degree', () {
-      final List<Map<String, dynamic>> stancesList =
+      final List<Stance> stancesList =
           stances.getStancesByStyle(degree: 1, style: 'daisihing');
       expect(stancesList.length, 4);
     });
@@ -42,6 +41,12 @@ void main() {
       final selectedStance = stances.getRandomStance(
           stances: stances.getStancesByDegree(degree: 1));
       print(selectedStance);
+    });
+
+    test('Should create an array stance instance of model', () {
+      final stancesList = stances.getStances();
+      expect(stancesList[0] is Stance, true);
+      expect(stancesList[0].name, 'Tan Sau');
     });
   });
 }

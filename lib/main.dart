@@ -4,6 +4,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pwts_app/components/options-list.dart';
+import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances.dart';
 
 void main() => runApp(MyApp());
@@ -32,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   static Color mainBrown = Color.fromRGBO(41, 23, 34, 1.0);
-  Map<String, dynamic> selectedStance;
+  Stance selectedStance;
   TextStyle titleStyle =
       TextStyle(color: mainBrown, fontSize: 20.0, fontFamily: 'CN Rocks');
   Map<String, dynamic> options = {
@@ -70,13 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _switchStance(
-      Stances stances, List<Map<String, dynamic>> filteredStances) {
+  void _switchStance(Stances stances, List<Stance> filteredStances) {
     setState(() {
       selectedStance = stances.getRandomStance(stances: filteredStances);
       _counter++;
     });
-    player.play(selectedStance['audio']);
+    player.play(selectedStance.audio);
   }
 
   void _stopCounter() {
@@ -169,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Center(
                           child: Text(
                             (timer != null && timer.isActive)
-                                ? selectedStance['name']
+                                ? selectedStance.name
                                 : 'GO',
                             style: TextStyle(
                                 color: Colors.white,

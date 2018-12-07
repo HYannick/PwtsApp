@@ -1,36 +1,43 @@
 import 'dart:math';
 
 import 'package:meta/meta.dart';
+import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances_data.dart';
 
 class Stances {
-  List<Map<String, dynamic>> getStancesByStyle(
-      {@required String style, int degree}) {
-    return stancesList.where((Map<String, dynamic> stance) {
+  List<Stance> getStancesByStyle({@required String style, int degree}) {
+    return getStances().where((Stance stance) {
       if (degree != null) {
-        return stance['style'].contains(style) &&
-            stance['degree'].contains(degree);
+        return stance.style.contains(style) && stance.degree.contains(degree);
       } else {
-        return stance['style'].contains(style);
+        return stance.style.contains(style);
       }
     }).toList();
   }
 
-  List<Map<String, dynamic>> getStancesByDegree({@required int degree}) {
-    return stancesList.where((Map<String, dynamic> stance) {
-      return stance['degree'].contains(degree);
-    }).toList();
+  List<Stance> getStancesByDegree({@required int degree}) {
+    return getStances()
+        .where((Stance stance) => stance.degree.contains(degree))
+        .toList();
   }
 
-  List<Map<String, dynamic>> getStances() => stancesList;
+  List<Stance> getStances() {
+    final List<Stance> stance = stancesList
+        .map((Map<String, dynamic> stance) => Stance(
+            audio: stance['audio'],
+            style: stance['style'],
+            name: stance['name'],
+            degree: stance['degree']))
+        .toList();
+    return stance;
+  }
 
-  List<Map<String, dynamic>> getShuffledStances(
-      {@required List<Map<String, dynamic>> stances}) {
+  List<Stance> getShuffledStances({@required List<Stance> stances}) {
     stances.shuffle();
     return stances;
   }
 
-  Map<String, dynamic> getRandomStance({@required stances}) {
+  Stance getRandomStance({@required List<Stance> stances}) {
     Random random = Random();
     int i = random.nextInt(stances.length - 1);
     return stances[i];
