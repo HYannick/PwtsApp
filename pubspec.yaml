@@ -20,6 +20,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_svg: ^0.7.0+1
+  path_provider: ^0.4.1
+  audioplayers: ^0.7.8
+  http: ^0.12.0
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +49,15 @@ flutter:
     - assets/brush_trace_top.svg
     - assets/brush_trace_bottom.svg
     - assets/go_bg.svg
+    - assets/audio/bong_sau.mp3
+    - assets/audio/fuk_sau.mp3
+    - assets/audio/gam_sau.mp3
+    - assets/audio/gaang_sau.mp3
+    - assets/audio/kau_sau.mp3
+    - assets/audio/kwan_sau.mp3
+    - assets/audio/paak_sau.mp3
+    - assets/audio/taan_sau.mp3
+    - assets/audio/zam_sau.mp3
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pwts_app/components/options-list.dart';
@@ -37,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, dynamic> options = {
     "degrees": [1, 2],
     "nbStances": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-    "intervals": [1, 2, 3, 4, 5, 10],
+    "intervals": [2, 3, 4, 5, 10],
   };
 
   Map<String, dynamic> selectedOptions = {
@@ -48,22 +49,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Timer timer;
 
-  void _initStances() {
+  static AudioCache player = new AudioCache();
+
+  void _initStances() async {
     final stances = Stances();
     final filteredStances =
         stances.getStancesByDegree(degree: selectedOptions['degree']);
 
+    await Future.delayed(Duration(seconds: 5), () {
+      _switchStance(stances, filteredStances);
+    });
+
     timer =
         Timer.periodic(Duration(seconds: selectedOptions['intervals']), (_) {
       if (_counter < selectedOptions['nbStances']) {
-        setState(() {
-          selectedStance = stances.getRandomStance(stances: filteredStances);
-          _counter++;
-        });
+        _switchStance(stances, filteredStances);
       } else {
         _stopCounter();
       }
     });
+  }
+
+  void _switchStance(
+      Stances stances, List<Map<String, dynamic>> filteredStances) {
+    setState(() {
+      selectedStance = stances.getRandomStance(stances: filteredStances);
+      _counter++;
+    });
+    player.play(selectedStance['audio']);
   }
 
   void _stopCounter() {
@@ -87,9 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
             'assets/wc__bg.jpg',
             fit: BoxFit.cover,
           )),
-          CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
+          ListView(
+            children: <Widget>[
+              AppBar(
                 title: new Text(
                   "詠春",
                   style: TextStyle(color: Colors.white, fontSize: 35.0),
@@ -100,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Transform(
                     transform: Matrix4.identity()
                       ..translate(-60.0, -30.0)
-                      ..scale(1.7),
+                      ..scale(1.3),
                     child: SvgPicture.asset(
                       'assets/brush_trace.svg',
                       width: 50.0,
@@ -111,68 +124,65 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 elevation: 0.0,
               ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  OptionsList(
-                    list: options['degrees'],
-                    title: 'Degré',
-                    field: 'degree',
-                    onSelectedItem: onSelectedItem,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  OptionsList(
-                    list: options['nbStances'],
-                    title: 'Nombre de mouvements',
-                    field: 'nbStances',
-                    onSelectedItem: onSelectedItem,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  OptionsList(
-                    list: options['intervals'],
-                    title: 'Temps',
-                    field: 'intervals',
-                    onSelectedItem: onSelectedItem,
-                  ),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  GestureDetector(
-                    onTap: _initStances,
-                    child: Center(
-                      child: SizedBox(
-                        width: 200.0,
-                        height: 200.0,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                                child: SvgPicture.asset(
-                              'assets/go_bg'
-                                  '.svg',
-                              fit: BoxFit.cover,
-                              color: mainBrown,
-                            )),
-                            Center(
-                              child: Text(
-                                'GO',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 120.0,
-                                    fontFamily: 'CN takeway'),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+              OptionsList(
+                list: options['degrees'],
+                title: 'Degré',
+                field: 'degree',
+                onSelectedItem: onSelectedItem,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              OptionsList(
+                list: options['nbStances'],
+                title: 'Nombre de mouvements',
+                field: 'nbStances',
+                onSelectedItem: onSelectedItem,
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              OptionsList(
+                list: options['intervals'],
+                title: 'Temps',
+                field: 'intervals',
+                onSelectedItem: onSelectedItem,
+              ),
+              SizedBox(
+                height: 50.0,
+              ),
+              GestureDetector(
+                onTap: _initStances,
+                child: Center(
+                  child: SizedBox(
+                    width: 200.0,
+                    height: 200.0,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                            child: SvgPicture.asset(
+                          'assets/go_bg'
+                              '.svg',
+                          fit: BoxFit.cover,
+                          color: mainBrown,
+                        )),
+                        Center(
+                          child: Text(
+                            (timer != null && timer.isActive)
+                                ? selectedStance['name']
+                                : 'GO',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (timer != null && timer.isActive)
+                                    ? 50.0
+                                    : 120.0,
+                                fontFamily: 'CN takeway'),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ]),
+                  ),
+                ),
               )
             ],
           ),

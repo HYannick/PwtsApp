@@ -1,55 +1,55 @@
 List<Map<String, dynamic>> stancesList = [
   {
-    'name': 'Tan Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Tan Sau',
+    'audio': 'audio/taan_sau.mp3',
     'degree': [1, 2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Gan Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Gaang Sau',
+    'audio': 'audio/gaang_sau.mp3',
     'degree': [1, 2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Gam Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Gam Sau',
+    'audio': 'audio/gam_sau.mp3',
     'degree': [1, 2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Kwan Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Kwan Sau',
+    'audio': 'audio/kwan_sau.mp3',
     'degree': [2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Paak Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Paak Sau',
+    'audio': 'audio/paak_sau.mp3',
     'degree': [1, 2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Fook Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Fuk Sau',
+    'audio': 'audio/fuk_sau.mp3',
     'degree': [2],
     'style': ['daisihing']
   },
   {
-    'name': 'Bong Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Bong Sau',
+    'audio': 'audio/bong_sau.mp3',
     'degree': [2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Jam Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Jam Sau',
+    'audio': 'audio/zam_sau.mp3',
     'degree': [2],
     'style': ['sifu', 'daisihing']
   },
   {
-    'name': 'Kao Sao',
-    'audio': 'assets/audio/tan_sao.mp3',
+    'name': 'Kau Sau',
+    'audio': 'audio/kau_sau.mp3',
     'degree': [2],
     'style': ['daisihing']
   },
