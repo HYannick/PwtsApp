@@ -57,6 +57,7 @@ class OptionsModalState extends State<OptionsModal> {
               Radio<WingChungStyle>(
                 value: WingChungStyle.sifu,
                 groupValue: widget.style,
+                activeColor: mainRed,
                 onChanged: changeWCStyle,
               ),
               Text('Dai Sihing Style',
@@ -64,6 +65,7 @@ class OptionsModalState extends State<OptionsModal> {
               Radio<WingChungStyle>(
                 value: WingChungStyle.daisihing,
                 groupValue: widget.style,
+                activeColor: mainRed,
                 onChanged: changeWCStyle,
               ),
             ],

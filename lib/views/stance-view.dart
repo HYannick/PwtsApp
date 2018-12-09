@@ -184,6 +184,7 @@ class _StanceTrainingState extends State<StanceTraining> {
               child: Image.asset(
             backgroundImage,
             fit: BoxFit.cover,
+            alignment: Alignment.centerRight,
           )),
           ListView(
             children: <Widget>[
@@ -297,6 +298,7 @@ class _StanceTrainingState extends State<StanceTraining> {
               child: _buildGoBtn(buttonText, isActive)),
         ],
       ),
+// TODO: Do the redirection for stances listing
 //      floatingActionButton: RawMaterialButton(
 //          child: Container(
 //            width: 80.0,
