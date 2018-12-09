@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                   )),
               SplashScreen(
-                  seconds: 5,
+                  seconds: 3,
                   navigateAfterSeconds: StanceTraining(),
                   title: Text(
                     '詠春',
