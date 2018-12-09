@@ -42,6 +42,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/wc__bg.jpg
+    - assets/splashscreen_bg.png
     - assets/brush_splash.svg
     - assets/brush_splash_simple.svg
     - assets/brush_trace.svg
@@ -78,6 +79,9 @@ flutter:
    - family: CN Takeway
      fonts:
        - asset: assets/fonts/ch_takeway.ttf
+   - family: CN Senty
+     fonts:
+       - asset: assets/fonts/ch_senty.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

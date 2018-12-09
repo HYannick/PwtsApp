@@ -34,9 +34,9 @@ class _StanceTrainingState extends State<StanceTraining> {
   };
 
   Timer timer;
-  Timer awaiting;
+  Timer awaitingCountdown;
   Timer countdown;
-  
+
   int _counter = 0;
   int _countdownTime = 5;
 
@@ -94,7 +94,7 @@ class _StanceTrainingState extends State<StanceTraining> {
 
     _startCountdown();
 
-    awaiting = Timer(Duration(seconds: 5), () async {
+    awaitingCountdown = Timer(Duration(seconds: 5), () async {
       if (buttonState != ButtonState.stopped) {
         if (_enableThemeSong) {
           themeSong = await bgSound.loop(mainTheme, volume: 0.2);
@@ -151,7 +151,7 @@ class _StanceTrainingState extends State<StanceTraining> {
       buttonState = ButtonState.stopped;
     });
 
-    awaiting?.cancel();
+    awaitingCountdown?.cancel();
     countdown?.cancel();
     timer?.cancel();
     themeSong?.stop();
@@ -185,14 +185,17 @@ class _StanceTrainingState extends State<StanceTraining> {
               child: Image.asset(
             backgroundImage,
             fit: BoxFit.cover,
-            alignment: Alignment.centerRight,
           )),
           ListView(
             children: <Widget>[
               AppBar(
                 title: new Text(
                   "詠春",
-                  style: TextStyle(color: mainLight, fontSize: 35.0),
+                  style: TextStyle(
+                      color: mainLight,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 35.0,
+                      fontFamily: familyTertiary),
                 ),
                 backgroundColor: Colors.transparent,
                 flexibleSpace: Row(
