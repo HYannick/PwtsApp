@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pwts_app/abstracts.dart';
 import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances.dart';
 
@@ -22,18 +23,19 @@ void main() {
     });
 
     test('Should have Sifu style', () {
-      final List<Stance> stancesList = stances.getStancesByStyle(style: 'sifu');
+      final List<Stance> stancesList =
+          stances.getStancesByStyle(style: WingChungStyle.sifu);
       expect(stancesList.length, 7);
     });
 
     test('Should have 7 Sifu style for second degree', () {
       final List<Stance> stancesList =
-          stances.getStancesByStyle(degree: 2, style: 'sifu');
+          stances.getStancesByStyle(degree: 2, style: WingChungStyle.sifu);
       expect(stancesList.length, 7);
     });
     test('Should have 4 daisihing style for first degree', () {
       final List<Stance> stancesList =
-          stances.getStancesByStyle(degree: 1, style: 'daisihing');
+          stances.getStancesByStyle(degree: 1, style: WingChungStyle.daisihing);
       expect(stancesList.length, 4);
     });
 

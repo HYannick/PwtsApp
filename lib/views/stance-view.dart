@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pwts_app/abstracts.dart';
 import 'package:pwts_app/components/options-list.dart';
+import 'package:pwts_app/components/options-modal.dart';
 import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +38,9 @@ class _StanceTrainingState extends State<StanceTraining> {
   int _counter = 0;
   Timer countdown;
   int _countdownTime = 5;
+
   bool _enableThemeSong = true;
+  WingChungStyle _wcStyle;
 
   ButtonState buttonState;
   static AudioCache player = AudioCache();
@@ -47,6 +51,7 @@ class _StanceTrainingState extends State<StanceTraining> {
   @override
   void initState() {
     buttonState = ButtonState.stopped;
+    _wcStyle = WingChungStyle.daisihing;
     getOptions();
     super.initState();
   }
@@ -54,9 +59,24 @@ class _StanceTrainingState extends State<StanceTraining> {
   Future getOptions() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isThemeSongEnabled = prefs.getBool('themeSong');
+    final int wingChunStyle = prefs.getInt('wcStyle');
+
     if (isThemeSongEnabled != null) {
       _enableThemeSong = isThemeSongEnabled;
     }
+    if (wingChunStyle != null) {
+      _wcStyle = WingChungStyle.values[wingChunStyle];
+    }
+  }
+
+  updateOptions({style, enableThemeSong}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('themeSong', enableThemeSong);
+    await prefs.setInt('wcStyle', WingChungStyle.values.indexOf(style));
+    setState(() {
+      _enableThemeSong = enableThemeSong;
+      _wcStyle = style;
+    });
   }
 
   @override
@@ -68,8 +88,8 @@ class _StanceTrainingState extends State<StanceTraining> {
 
   void _initStances() async {
     final stances = Stances();
-    final filteredStances =
-        stances.getStancesByDegree(degree: selectedOptions['degree']);
+    final filteredStances = stances.getStancesByStyle(
+        degree: selectedOptions['degree'], style: _wcStyle);
 
     _startCountdown();
 
@@ -209,23 +229,10 @@ class _StanceTrainingState extends State<StanceTraining> {
                             onTap: () {
                               showModalBottomSheet<void>(
                                   context: context,
-                                  builder: (BuildContext context) {
-                                    return new Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        SwitchListTile(
-                                          title: const Text('Musique de fond'),
-                                          subtitle: const Text(
-                                              'S\'active lors de de l\'exercice'),
-                                          value: _enableThemeSong,
-                                          activeColor: mainRed,
-                                          onChanged: _enableThemeOpts,
-                                          secondary:
-                                              const Icon(Icons.music_note),
-                                        )
-                                      ],
-                                    );
-                                  });
+                                  builder: (_) => OptionsModal(
+                                      enableThemeSong: _enableThemeSong,
+                                      style: _wcStyle,
+                                      updateOptions: updateOptions));
                             },
                             child: Container(
                               margin: EdgeInsets.only(left: 5.0),
@@ -304,14 +311,6 @@ class _StanceTrainingState extends State<StanceTraining> {
 //            print('other page stances');
 //          }),
     );
-  }
-
-  void _enableThemeOpts(bool value) async {
-    setState(() {
-      _enableThemeSong = value;
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('themeSong', value);
   }
 
   GestureDetector _buildGoBtn(String buttonText, bool isActive) {

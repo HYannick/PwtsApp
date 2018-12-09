@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // States
 enum ButtonState { countdown, playing, stopped }
+enum WingChungStyle { daisihing, sifu }
 
 // Easings
 const Cubic cubicEase = const Cubic(0.8, 0, 0.2, 1);
