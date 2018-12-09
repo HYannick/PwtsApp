@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pwts_app/views/stance-view.dart';
+import 'package:pwts_app/abstracts.dart';
 
 class OptionsList extends StatefulWidget {
-  static Color mainBrown = Color.fromRGBO(41, 23, 34, 1.0);
   final String title;
   final String field;
   final List list;
@@ -21,8 +20,8 @@ class OptionsList extends StatefulWidget {
 class OptionsListState extends State<OptionsList> {
   int _selectedItem = 0;
 
-  TextStyle titleStyle = TextStyle(
-      color: OptionsList.mainBrown, fontSize: 20.0, fontFamily: 'CN Rocks');
+  TextStyle titleStyle =
+      TextStyle(color: mainBrown, fontSize: 20.0, fontFamily: familyMain);
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +43,7 @@ class OptionsListState extends State<OptionsList> {
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   final bool isSelected = _selectedItem == index;
-                  String path = isSelected
-                      ? 'assets/brush_splash.svg'
-                      : 'assets/brush_splash_simple.svg';
+                  String path = isSelected ? activeBtnSVG : inactiveBtnSVG;
                   return GestureDetector(
                     onTap: () {
                       setState(() {
@@ -69,9 +66,7 @@ class OptionsListState extends State<OptionsList> {
                               path,
                               fit: BoxFit.cover,
                               key: ValueKey<String>(path),
-                              color: isSelected
-                                  ? Colors.redAccent
-                                  : OptionsList.mainBrown,
+                              color: isSelected ? mainRed : mainBrown,
                             ),
                           )),
                           Container(
@@ -79,9 +74,9 @@ class OptionsListState extends State<OptionsList> {
                             child: Center(
                                 child: Text('${widget.list[index]}',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: mainLight,
                                         fontSize: 20.0,
-                                        fontFamily: 'CN Rocks',
+                                        fontFamily: familyMain,
                                         fontWeight: FontWeight.bold))),
                           )
                         ])),

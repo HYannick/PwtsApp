@@ -4,14 +4,11 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pwts_app/abstracts.dart';
 import 'package:pwts_app/components/options-list.dart';
 import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-enum ButtonState { countdown, playing, stopped }
-
-const cubicEase = const Cubic(0.8, 0, 0.2, 1);
 
 class StanceTraining extends StatefulWidget {
   StanceTraining({Key key}) : super(key: key);
@@ -20,12 +17,8 @@ class StanceTraining extends StatefulWidget {
   _StanceTrainingState createState() => _StanceTrainingState();
 }
 
-class _StanceTrainingState extends State<StanceTraining>
-    with SingleTickerProviderStateMixin {
-  static Color mainBrown = Color.fromRGBO(41, 23, 34, 1.0);
+class _StanceTrainingState extends State<StanceTraining> {
   Stance selectedStance;
-  TextStyle titleStyle =
-      TextStyle(color: mainBrown, fontSize: 20.0, fontFamily: 'CN Rocks');
   Map<String, dynamic> options = {
     "degrees": [1, 2],
     "nbStances": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
@@ -83,7 +76,7 @@ class _StanceTrainingState extends State<StanceTraining>
     awaiting = Timer(Duration(seconds: 5), () async {
       if (buttonState != ButtonState.stopped) {
         if (_enableThemeSong) {
-          themeSong = await bgSound.loop('audio/theme_ip.mp3', volume: 0.2);
+          themeSong = await bgSound.loop(mainTheme, volume: 0.2);
         }
         _switchStance(stances, filteredStances);
 
@@ -169,7 +162,7 @@ class _StanceTrainingState extends State<StanceTraining>
         children: <Widget>[
           Positioned.fill(
               child: Image.asset(
-            'assets/wc__bg.jpg',
+            backgroundImage,
             fit: BoxFit.cover,
           )),
           ListView(
@@ -177,7 +170,7 @@ class _StanceTrainingState extends State<StanceTraining>
               AppBar(
                 title: new Text(
                   "詠春",
-                  style: TextStyle(color: Colors.white, fontSize: 35.0),
+                  style: TextStyle(color: mainLight, fontSize: 35.0),
                 ),
                 backgroundColor: Colors.transparent,
                 flexibleSpace: Row(
@@ -206,9 +199,9 @@ class _StanceTrainingState extends State<StanceTraining>
                               width: 80.0,
                               height: 80.0,
                               child: SvgPicture.asset(
-                                'assets/brush_splash_simple.svg',
+                                inactiveBtnSVG,
                                 fit: BoxFit.cover,
-                                color: Colors.redAccent,
+                                color: mainRed,
                               ),
                             ),
                           ),
@@ -225,7 +218,7 @@ class _StanceTrainingState extends State<StanceTraining>
                                           subtitle: const Text(
                                               'S\'active lors de de l\'exercice'),
                                           value: _enableThemeSong,
-                                          activeColor: Colors.redAccent,
+                                          activeColor: mainRed,
                                           onChanged: _enableThemeOpts,
                                           secondary:
                                               const Icon(Icons.music_note),
@@ -304,7 +297,7 @@ class _StanceTrainingState extends State<StanceTraining>
 //            child: SvgPicture.asset(
 //              'assets/brush_splash.svg',
 //              fit: BoxFit.cover,
-//              color: Colors.redAccent,
+//              color: mainRed,
 //            ),
 //          ),
 //          onPressed: () {
@@ -357,13 +350,13 @@ class _StanceTrainingState extends State<StanceTraining>
                     key: ValueKey<String>(buttonText),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: mainLight,
                         fontSize:
                             buttonState == ButtonState.playing ? 50.0 : 120.0,
                         fontFamily: (buttonState == ButtonState.playing ||
                                 buttonState == ButtonState.stopped)
-                            ? 'CN takeway'
-                            : 'CN rocks'),
+                            ? familySecondary
+                            : familyMain),
                   ),
                 ),
               ),
@@ -380,16 +373,16 @@ class _StanceTrainingState extends State<StanceTraining>
                           child: Stack(
                             children: <Widget>[
                               SvgPicture.asset(
-                                'assets/brush_splash_simple.svg',
+                                inactiveBtnSVG,
                                 fit: BoxFit.contain,
-                                color: Colors.redAccent,
+                                color: mainRed,
                               ),
                               Center(
                                 child: Container(
                                   margin: EdgeInsets.only(left: 5.0),
                                   child: Icon(
                                     Icons.stop,
-                                    color: Colors.white,
+                                    color: mainLight,
                                     size: 30.0,
                                   ),
                                 ),
