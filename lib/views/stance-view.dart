@@ -35,12 +35,13 @@ class _StanceTrainingState extends State<StanceTraining> {
 
   Timer timer;
   Timer awaiting;
-  int _counter = 0;
   Timer countdown;
+  
+  int _counter = 0;
   int _countdownTime = 5;
 
   bool _enableThemeSong = true;
-  WingChungStyle _wcStyle;
+  WingChunStyle _wcStyle;
 
   ButtonState buttonState;
   static AudioCache player = AudioCache();
@@ -51,7 +52,7 @@ class _StanceTrainingState extends State<StanceTraining> {
   @override
   void initState() {
     buttonState = ButtonState.stopped;
-    _wcStyle = WingChungStyle.daisihing;
+    _wcStyle = WingChunStyle.daisihing;
     getOptions();
     super.initState();
   }
@@ -65,14 +66,14 @@ class _StanceTrainingState extends State<StanceTraining> {
       _enableThemeSong = isThemeSongEnabled;
     }
     if (wingChunStyle != null) {
-      _wcStyle = WingChungStyle.values[wingChunStyle];
+      _wcStyle = WingChunStyle.values[wingChunStyle];
     }
   }
 
   updateOptions({style, enableThemeSong}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('themeSong', enableThemeSong);
-    await prefs.setInt('wcStyle', WingChungStyle.values.indexOf(style));
+    await prefs.setInt('wcStyle', WingChunStyle.values.indexOf(style));
     setState(() {
       _enableThemeSong = enableThemeSong;
       _wcStyle = style;

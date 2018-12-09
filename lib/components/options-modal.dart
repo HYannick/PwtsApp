@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pwts_app/abstracts.dart';
 
 class OptionsModal extends StatefulWidget {
-  WingChungStyle style;
+  WingChunStyle style;
   bool enableThemeSong;
   final Function updateOptions;
 
@@ -23,7 +23,7 @@ class OptionsModalState extends State<OptionsModal> {
         style: widget.style, enableThemeSong: widget.enableThemeSong);
   }
 
-  void changeWCStyle(WingChungStyle value) {
+  void changeWCStyle(WingChunStyle value) {
     setState(() {
       widget.style = value;
     });
@@ -54,16 +54,16 @@ class OptionsModalState extends State<OptionsModal> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text('Sifu Style', style: TextStyle(fontFamily: familyMain)),
-              Radio<WingChungStyle>(
-                value: WingChungStyle.sifu,
+              Radio<WingChunStyle>(
+                value: WingChunStyle.sifu,
                 groupValue: widget.style,
                 activeColor: mainRed,
                 onChanged: changeWCStyle,
               ),
               Text('Dai Sihing Style',
                   style: TextStyle(fontFamily: familyMain)),
-              Radio<WingChungStyle>(
-                value: WingChungStyle.daisihing,
+              Radio<WingChunStyle>(
+                value: WingChunStyle.daisihing,
                 groupValue: widget.style,
                 activeColor: mainRed,
                 onChanged: changeWCStyle,

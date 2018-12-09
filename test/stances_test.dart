@@ -24,18 +24,18 @@ void main() {
 
     test('Should have Sifu style', () {
       final List<Stance> stancesList =
-          stances.getStancesByStyle(style: WingChungStyle.sifu);
+          stances.getStancesByStyle(style: WingChunStyle.sifu);
       expect(stancesList.length, 7);
     });
 
     test('Should have 7 Sifu style for second degree', () {
       final List<Stance> stancesList =
-          stances.getStancesByStyle(degree: 2, style: WingChungStyle.sifu);
+          stances.getStancesByStyle(degree: 2, style: WingChunStyle.sifu);
       expect(stancesList.length, 7);
     });
     test('Should have 4 daisihing style for first degree', () {
       final List<Stance> stancesList =
-          stances.getStancesByStyle(degree: 1, style: WingChungStyle.daisihing);
+          stances.getStancesByStyle(degree: 1, style: WingChunStyle.daisihing);
       expect(stancesList.length, 4);
     });
 

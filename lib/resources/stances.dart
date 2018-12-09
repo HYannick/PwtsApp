@@ -7,7 +7,7 @@ import 'package:pwts_app/models/stance.dart';
 import 'package:pwts_app/resources/stances_data.dart';
 
 class Stances {
-  List<Stance> getStancesByStyle({@required WingChungStyle style, int degree}) {
+  List<Stance> getStancesByStyle({@required WingChunStyle style, int degree}) {
     return getStances().where((Stance stance) {
       if (degree != null) {
         return stance.style.contains(describeEnum(style)) &&
