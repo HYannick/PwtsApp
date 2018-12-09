@@ -20,9 +20,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_svg: ^0.7.0+1
-  path_provider: ^0.4.1
   audioplayers: ^0.7.8
-  http: ^0.12.0
+  shared_preferences: ^0.4.3
 
 dev_dependencies:
   flutter_test:
@@ -43,12 +42,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/wc__bg.jpg
-    - assets/splash_brush.png
-    - assets/splash_brush.svg
+    - assets/brush_splash.svg
+    - assets/brush_splash_simple.svg
     - assets/brush_trace.svg
     - assets/brush_trace_top.svg
     - assets/brush_trace_bottom.svg
     - assets/go_bg.svg
+    - assets/settings-icon.svg
     - assets/audio/bong_sau.mp3
     - assets/audio/fuk_sau.mp3
     - assets/audio/gam_sau.mp3
@@ -58,7 +58,7 @@ flutter:
     - assets/audio/paak_sau.mp3
     - assets/audio/taan_sau.mp3
     - assets/audio/zam_sau.mp3
-  #  - images/a_dot_ham.jpeg
+    - assets/audio/theme_ip.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
