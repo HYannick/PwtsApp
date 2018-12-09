@@ -4,7 +4,7 @@ import 'package:pwts_app/abstracts.dart';
 class OptionsModal extends StatefulWidget {
   WingChungStyle style;
   bool enableThemeSong;
-  Function updateOptions;
+  final Function updateOptions;
 
   OptionsModal({this.enableThemeSong, this.style, this.updateOptions});
 
@@ -59,7 +59,8 @@ class OptionsModalState extends State<OptionsModal> {
                 groupValue: widget.style,
                 onChanged: changeWCStyle,
               ),
-              Text('Dai Sihing Style'),
+              Text('Dai Sihing Style',
+                  style: TextStyle(fontFamily: familyMain)),
               Radio<WingChungStyle>(
                 value: WingChungStyle.daisihing,
                 groupValue: widget.style,
