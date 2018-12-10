@@ -38,7 +38,7 @@ class _StanceTrainingState extends State<StanceTraining> {
   Timer countdown;
 
   int _counter = 0;
-  int _countdownTime = 5;
+  int _countdownTime = 3;
 
   bool _enableThemeSong = true;
   WingChunStyle _wcStyle;
@@ -94,7 +94,7 @@ class _StanceTrainingState extends State<StanceTraining> {
 
     _startCountdown();
 
-    awaitingCountdown = Timer(Duration(seconds: 5), () async {
+    awaitingCountdown = Timer(Duration(seconds: _countdownTime), () async {
       if (buttonState != ButtonState.stopped) {
         if (_enableThemeSong) {
           themeSong = await bgSound.loop(mainTheme, volume: 0.2);
@@ -146,7 +146,7 @@ class _StanceTrainingState extends State<StanceTraining> {
 
   void _stopCounter() {
     setState(() {
-      _countdownTime = 5;
+      _countdownTime = 3;
       _counter = 0;
       buttonState = ButtonState.stopped;
     });
