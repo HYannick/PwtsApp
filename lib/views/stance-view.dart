@@ -214,32 +214,32 @@ class _StanceTrainingState extends State<StanceTraining> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: 80.0,
-                      height: 80.0,
-                      child: Stack(
-                        children: <Widget>[
-                          Positioned.fill(
-                            child: Container(
-                              width: 80.0,
-                              height: 80.0,
-                              child: SvgPicture.asset(
-                                inactiveBtnSVG,
-                                fit: BoxFit.cover,
-                                color: mainRed,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (_) => OptionsModal(
+                                enableThemeSong: _enableThemeSong,
+                                style: _wcStyle,
+                                updateOptions: updateOptions));
+                      },
+                      child: Container(
+                        width: 80.0,
+                        height: 80.0,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Container(
+                                width: 80.0,
+                                height: 80.0,
+                                child: SvgPicture.asset(
+                                  inactiveBtnSVG,
+                                  fit: BoxFit.cover,
+                                  color: mainRed,
+                                ),
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (_) => OptionsModal(
-                                      enableThemeSong: _enableThemeSong,
-                                      style: _wcStyle,
-                                      updateOptions: updateOptions));
-                            },
-                            child: Container(
+                            Container(
                               margin: EdgeInsets.only(left: 5.0),
                               child: Center(
                                   child: SvgPicture.asset(
@@ -247,10 +247,10 @@ class _StanceTrainingState extends State<StanceTraining> {
                                 width: 25.0,
                               )),
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 elevation: 0.0,
