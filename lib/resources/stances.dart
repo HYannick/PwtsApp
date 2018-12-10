@@ -8,7 +8,7 @@ import 'package:pwts_app/resources/stances_data.dart';
 
 class Stances {
   List<Stance> getStancesByStyle({@required WingChunStyle style, int degree}) {
-    return getStances().where((Stance stance) {
+    return allStances.where((Stance stance) {
       if (degree != null) {
         return stance.style.contains(describeEnum(style)) &&
             stance.degree.contains(degree);
@@ -19,20 +19,9 @@ class Stances {
   }
 
   List<Stance> getStancesByDegree({@required int degree}) {
-    return getStances()
+    return allStances
         .where((Stance stance) => stance.degree.contains(degree))
         .toList();
-  }
-
-  List<Stance> getStances() {
-    final List<Stance> stance = stancesList
-        .map((Map<String, dynamic> stance) => Stance(
-            audio: stance['audio'],
-            style: stance['style'],
-            name: stance['name'],
-            degree: stance['degree']))
-        .toList();
-    return stance;
   }
 
   List<Stance> getShuffledStances({@required List<Stance> stances}) {

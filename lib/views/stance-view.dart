@@ -20,44 +20,52 @@ class StanceTraining extends StatefulWidget {
 }
 
 class _StanceTrainingState extends State<StanceTraining> {
-  Stance selectedStance;
-  Map<String, dynamic> options = {
-    "degrees": [1, 2],
-    "nbStances": [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-    "intervals": [2, 3, 4, 5, 10],
+  Map<String, dynamic> _options = {
+    "degrees": <int>[1, 2],
+    "nbStances": <int>[5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
+    "intervals": <int>[2, 3, 4, 5, 10],
   };
 
-  Map<String, dynamic> selectedOptions = {
+  Map<String, dynamic> _selectedOptions = {
     "degree": 1,
     "nbStances": 5,
     "intervals": 2,
   };
 
-  Timer timer;
-  Timer awaitingCountdown;
-  Timer countdown;
+  Timer _timer;
+  Timer _awaitingCountdown;
+  Timer _countdown;
 
   int _counter = 0;
   int _countdownTime = 3;
 
   bool _enableThemeSong = true;
-  WingChunStyle _wcStyle;
+  WingChunStyle _wcStyle = WingChunStyle.daisihing;
 
-  ButtonState buttonState;
-  static AudioCache player = AudioCache();
-  static AudioCache bgSound = AudioCache();
-  AudioPlayer themeSong;
-  AudioPlayer stanceAudio;
+  ButtonState _buttonState = ButtonState.stopped;
+
+  static AudioCache _player = AudioCache();
+  static AudioCache _bgSound = AudioCache();
+
+  AudioPlayer _themeSong;
+  AudioPlayer _stanceAudio;
+
+  Stance _selectedStance;
 
   @override
   void initState() {
-    buttonState = ButtonState.stopped;
-    _wcStyle = WingChunStyle.daisihing;
-    getOptions();
     super.initState();
+    _getOptions();
   }
 
-  Future getOptions() async {
+  @override
+  void dispose() {
+    _bgSound.clearCache();
+    _player.clearCache();
+    super.dispose();
+  }
+
+  Future _getOptions() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isThemeSongEnabled = prefs.getBool('themeSong');
     final int wingChunStyle = prefs.getInt('wcStyle');
@@ -70,7 +78,7 @@ class _StanceTrainingState extends State<StanceTraining> {
     }
   }
 
-  updateOptions({style, enableThemeSong}) async {
+  void _updateOptions({style, enableThemeSong}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('themeSong', enableThemeSong);
     await prefs.setInt('wcStyle', WingChunStyle.values.indexOf(style));
@@ -80,34 +88,27 @@ class _StanceTrainingState extends State<StanceTraining> {
     });
   }
 
-  @override
-  void dispose() {
-    bgSound.clearCache();
-    player.clearCache();
-    super.dispose();
-  }
-
   void _initStances() async {
     final stances = Stances();
     final filteredStances = stances.getStancesByStyle(
-        degree: selectedOptions['degree'], style: _wcStyle);
+        degree: _selectedOptions['degree'], style: _wcStyle);
 
     _startCountdown();
 
-    awaitingCountdown = Timer(Duration(seconds: _countdownTime), () async {
-      if (buttonState != ButtonState.stopped) {
+    _awaitingCountdown = Timer(Duration(seconds: _countdownTime), () async {
+      if (_buttonState != ButtonState.stopped) {
         if (_enableThemeSong) {
-          themeSong = await bgSound.loop(mainTheme, volume: 0.2);
+          _themeSong = await _bgSound.loop(mainTheme, volume: 0.2);
         }
         _switchStance(stances, filteredStances);
 
-        timer = Timer.periodic(Duration(seconds: selectedOptions['intervals']),
-            (_) {
-          if (_counter < selectedOptions['nbStances']) {
+        _timer = Timer.periodic(
+            Duration(seconds: _selectedOptions['intervals']), (_) {
+          if (_counter < _selectedOptions['nbStances']) {
             _switchStance(stances, filteredStances);
           } else {
             setState(() {
-              buttonState = ButtonState.stopped;
+              _buttonState = ButtonState.stopped;
             });
             _stopCounter();
           }
@@ -118,15 +119,15 @@ class _StanceTrainingState extends State<StanceTraining> {
 
   void _startCountdown() {
     setState(() {
-      buttonState = ButtonState.countdown;
+      _buttonState = ButtonState.countdown;
     });
-    countdown = Timer.periodic(Duration(seconds: 1), (_) {
+    _countdown = Timer.periodic(Duration(seconds: 1), (_) {
       if (_countdownTime == 1) {
         setState(() {
-          buttonState = ButtonState.playing;
+          _buttonState = ButtonState.playing;
         });
 
-        countdown.cancel();
+        _countdown.cancel();
         _countdownTime = 3;
       } else {
         setState(() {
@@ -138,41 +139,41 @@ class _StanceTrainingState extends State<StanceTraining> {
 
   void _switchStance(Stances stances, List<Stance> filteredStances) async {
     setState(() {
-      selectedStance = stances.getRandomStance(stances: filteredStances);
+      _selectedStance = stances.getRandomStance(stances: filteredStances);
       _counter++;
     });
-    stanceAudio = await player.play(selectedStance.audio);
+    _stanceAudio = await _player.play(_selectedStance.audio);
   }
 
   void _stopCounter() {
     setState(() {
       _countdownTime = 3;
       _counter = 0;
-      buttonState = ButtonState.stopped;
+      _buttonState = ButtonState.stopped;
     });
 
-    awaitingCountdown?.cancel();
-    countdown?.cancel();
-    timer?.cancel();
-    themeSong?.stop();
-    stanceAudio?.stop();
+    _awaitingCountdown?.cancel();
+    _countdown?.cancel();
+    _timer?.cancel();
+    _themeSong?.stop();
+    _stanceAudio?.stop();
   }
 
   void onSelectedItem(int index, List list, String field) {
-    selectedOptions[field] = list[index];
+    _selectedOptions[field] = list[index];
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = buttonState == ButtonState.playing ||
-        buttonState == ButtonState.countdown;
+    bool isActive = _buttonState == ButtonState.playing ||
+        _buttonState == ButtonState.countdown;
     String buttonText;
-    switch (buttonState) {
+    switch (_buttonState) {
       case ButtonState.countdown:
         buttonText = _countdownTime.toString();
         break;
       case ButtonState.playing:
-        buttonText = selectedStance != null ? selectedStance.name : '';
+        buttonText = _selectedStance != null ? _selectedStance.name : '';
         break;
       case ButtonState.stopped:
         buttonText = 'GO';
@@ -189,7 +190,7 @@ class _StanceTrainingState extends State<StanceTraining> {
           ListView(
             children: <Widget>[
               AppBar(
-                title: new Text(
+                title: Text(
                   "詠春",
                   style: TextStyle(
                       color: mainLight,
@@ -221,7 +222,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                             builder: (_) => OptionsModal(
                                 enableThemeSong: _enableThemeSong,
                                 style: _wcStyle,
-                                updateOptions: updateOptions));
+                                updateOptions: _updateOptions));
                       },
                       child: Container(
                         width: 80.0,
@@ -262,7 +263,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                 child: Column(
                   children: <Widget>[
                     OptionsList(
-                      list: options['degrees'],
+                      list: _options['degrees'],
                       title: 'Degré',
                       field: 'degree',
                       onSelectedItem: onSelectedItem,
@@ -271,7 +272,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                       height: 20.0,
                     ),
                     OptionsList(
-                      list: options['nbStances'],
+                      list: _options['nbStances'],
                       title: 'Nombre de mouvements',
                       field: 'nbStances',
                       onSelectedItem: onSelectedItem,
@@ -280,7 +281,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                       height: 20.0,
                     ),
                     OptionsList(
-                      list: options['intervals'],
+                      list: _options['intervals'],
                       title: 'Temps',
                       field: 'intervals',
                       onSelectedItem: onSelectedItem,
@@ -302,7 +303,7 @@ class _StanceTrainingState extends State<StanceTraining> {
               child: _buildGoBtn(buttonText, isActive)),
         ],
       ),
-// TODO: Do the redirection for stances listing
+//      TODO: Do the redirection for stances listing
 //      floatingActionButton: RawMaterialButton(
 //          child: Container(
 //            width: 80.0,
@@ -357,9 +358,9 @@ class _StanceTrainingState extends State<StanceTraining> {
                     style: TextStyle(
                         color: mainLight,
                         fontSize:
-                            buttonState == ButtonState.playing ? 50.0 : 120.0,
-                        fontFamily: (buttonState == ButtonState.playing ||
-                                buttonState == ButtonState.stopped)
+                            _buttonState == ButtonState.playing ? 50.0 : 120.0,
+                        fontFamily: (_buttonState == ButtonState.playing ||
+                                _buttonState == ButtonState.stopped)
                             ? familySecondary
                             : familyMain),
                   ),

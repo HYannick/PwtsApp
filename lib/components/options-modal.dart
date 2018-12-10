@@ -10,7 +10,7 @@ class OptionsModal extends StatefulWidget {
 
   @override
   OptionsModalState createState() {
-    return new OptionsModalState();
+    return OptionsModalState();
   }
 }
 

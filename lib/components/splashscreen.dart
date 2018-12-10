@@ -13,6 +13,7 @@ class SplashScreen extends StatefulWidget {
   final dynamic onClick;
   final Color loaderColor;
   final Image image;
+
   SplashScreen(
       {this.loaderColor,
       @required this.seconds,
@@ -40,10 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
         return Navigator.of(context)
             .pushReplacementNamed(widget.navigateAfterSeconds);
       } else if (widget.navigateAfterSeconds is Widget) {
-        return Navigator.of(context).pushReplacement(new MaterialPageRoute(
+        return Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => widget.navigateAfterSeconds));
       } else {
-        throw new ArgumentError(
+        throw ArgumentError(
             'widget.navigateAfterSeconds must either be a String or Widget');
       }
     });
@@ -53,29 +54,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.backgroundColor,
-      body: new InkWell(
+      body: InkWell(
         onTap: widget.onClick,
-        child: new Stack(
+        child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            new Container(
+            Container(
               decoration: BoxDecoration(color: widget.backgroundColor),
             ),
-            new Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                new Expanded(
+                Expanded(
                   flex: 1,
-                  child: new Container(
-                      child: new Column(
+                  child: Container(
+                      child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      new CircleAvatar(
+                      CircleAvatar(
                         backgroundColor: Colors.transparent,
-                        child: new Container(child: widget.image),
+                        child: Container(child: widget.image),
                         radius: widget.photoSize,
                       ),
-                      new Padding(
+                      Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                       ),
                       widget.title
@@ -88,14 +89,14 @@ class _SplashScreenState extends State<SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                            widget.loaderColor),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(widget.loaderColor),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                       ),
                       Text("Loading", style: widget.styleTextUnderTheLoader),
-                      new Center(
+                      Center(
                         child:
                             Text("Now", style: widget.styleTextUnderTheLoader),
                       ),

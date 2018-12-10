@@ -44,11 +44,5 @@ void main() {
           stances: stances.getStancesByDegree(degree: 1));
       print(selectedStance);
     });
-
-    test('Should create an array stance instance of model', () {
-      final stancesList = stances.getStances();
-      expect(stancesList[0] is Stance, true);
-      expect(stancesList[0].name, 'Tan Sau');
-    });
   });
 }
