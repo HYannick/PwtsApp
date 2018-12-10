@@ -224,33 +224,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                                 style: _wcStyle,
                                 updateOptions: _updateOptions));
                       },
-                      child: Container(
-                        width: 80.0,
-                        height: 80.0,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                              child: Container(
-                                width: 80.0,
-                                height: 80.0,
-                                child: SvgPicture.asset(
-                                  inactiveBtnSVG,
-                                  fit: BoxFit.cover,
-                                  color: mainRed,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 5.0),
-                              child: Center(
-                                  child: SvgPicture.asset(
-                                'assets/settings-icon.svg',
-                                width: 25.0,
-                              )),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: buildSettingsBtn(),
                     )
                   ],
                 ),
@@ -320,6 +294,36 @@ class _StanceTrainingState extends State<StanceTraining> {
     );
   }
 
+  Container buildSettingsBtn() {
+    return Container(
+      width: 80.0,
+      height: 80.0,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Container(
+              width: 80.0,
+              height: 80.0,
+              child: SvgPicture.asset(
+                inactiveBtnSVG,
+                fit: BoxFit.cover,
+                color: mainRed,
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 5.0),
+            child: Center(
+                child: SvgPicture.asset(
+              'assets/settings-icon.svg',
+              width: 25.0,
+            )),
+          ),
+        ],
+      ),
+    );
+  }
+
   GestureDetector _buildGoBtn(String buttonText, bool isActive) {
     double btnSize = isActive ? 270.0 : 200.0;
     return GestureDetector(
@@ -340,68 +344,74 @@ class _StanceTrainingState extends State<StanceTraining> {
                 color: mainBrown,
               )),
               Center(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  switchInCurve: cubicEase,
-                  switchOutCurve: cubicEase,
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
-                    return FadeTransition(
-                      child: ScaleTransition(child: child, scale: animation),
-                      opacity: animation,
-                    );
-                  },
-                  child: Text(
-                    buttonText,
-                    key: ValueKey<String>(buttonText),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: mainLight,
-                        fontSize:
-                            _buttonState == ButtonState.playing ? 50.0 : 120.0,
-                        fontFamily: (_buttonState == ButtonState.playing ||
-                                _buttonState == ButtonState.stopped)
-                            ? familySecondary
-                            : familyMain),
-                  ),
-                ),
+                child: _buildTextSwitcher(buttonText),
               ),
-              Positioned(
-                bottom: -30.0,
-                left: 0,
-                right: 0,
-                child: isActive
-                    ? GestureDetector(
-                        onTap: _stopCounter,
-                        child: Container(
-                          width: 80.0,
-                          height: 80.0,
-                          child: Stack(
-                            children: <Widget>[
-                              SvgPicture.asset(
-                                inactiveBtnSVG,
-                                fit: BoxFit.contain,
-                                color: mainRed,
-                              ),
-                              Center(
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 5.0),
-                                  child: Icon(
-                                    Icons.stop,
-                                    color: mainLight,
-                                    size: 30.0,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ))
-                    : Container(),
-              )
+              _buildStopBtn(isActive)
             ],
           ),
         ),
       ),
+    );
+  }
+
+  AnimatedSwitcher _buildTextSwitcher(String buttonText) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      switchInCurve: cubicEase,
+      switchOutCurve: cubicEase,
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(
+          child: ScaleTransition(child: child, scale: animation),
+          opacity: animation,
+        );
+      },
+      child: Text(
+        buttonText,
+        key: ValueKey<String>(buttonText),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: mainLight,
+            fontSize: _buttonState == ButtonState.playing ? 50.0 : 120.0,
+            fontFamily: (_buttonState == ButtonState.playing ||
+                    _buttonState == ButtonState.stopped)
+                ? familySecondary
+                : familyMain),
+      ),
+    );
+  }
+
+  Positioned _buildStopBtn(bool isActive) {
+    return Positioned(
+      bottom: -30.0,
+      left: 0,
+      right: 0,
+      child: isActive
+          ? GestureDetector(
+              onTap: _stopCounter,
+              child: Container(
+                width: 80.0,
+                height: 80.0,
+                child: Stack(
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      inactiveBtnSVG,
+                      fit: BoxFit.contain,
+                      color: mainRed,
+                    ),
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5.0),
+                        child: Icon(
+                          Icons.stop,
+                          color: mainLight,
+                          size: 30.0,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ))
+          : Container(),
     );
   }
 }
