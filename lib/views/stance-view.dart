@@ -127,7 +127,7 @@ class _StanceTrainingState extends State<StanceTraining> {
         });
 
         countdown.cancel();
-        _countdownTime = 5;
+        _countdownTime = 3;
       } else {
         setState(() {
           _countdownTime--;
