@@ -4,9 +4,11 @@ import 'package:pwts_app/abstracts.dart';
 class OptionsModal extends StatefulWidget {
   WingChunStyle style;
   bool enableThemeSong;
+  String lang;
   final Function updateOptions;
 
-  OptionsModal({this.enableThemeSong, this.style, this.updateOptions});
+  OptionsModal(
+      {this.enableThemeSong, this.style, this.lang, this.updateOptions});
 
   @override
   OptionsModalState createState() {
@@ -20,7 +22,9 @@ class OptionsModalState extends State<OptionsModal> {
       widget.enableThemeSong = value;
     });
     widget.updateOptions(
-        style: widget.style, enableThemeSong: widget.enableThemeSong);
+        style: widget.style,
+        enableThemeSong: widget.enableThemeSong,
+        audioStyle: widget.lang);
   }
 
   void changeWCStyle(WingChunStyle value) {
@@ -28,7 +32,19 @@ class OptionsModalState extends State<OptionsModal> {
       widget.style = value;
     });
     widget.updateOptions(
-        style: widget.style, enableThemeSong: widget.enableThemeSong);
+        style: widget.style,
+        enableThemeSong: widget.enableThemeSong,
+        audioStyle: widget.lang);
+  }
+
+  void changeAudioStyle(String value) {
+    setState(() {
+      widget.lang = value;
+    });
+    widget.updateOptions(
+        style: widget.style,
+        enableThemeSong: widget.enableThemeSong,
+        audioStyle: widget.lang);
   }
 
   @override
@@ -48,25 +64,65 @@ class OptionsModalState extends State<OptionsModal> {
           onChanged: _enableThemeOpts,
           secondary: const Icon(Icons.music_note),
         ),
+        Divider(),
         Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Sifu Style', style: TextStyle(fontFamily: familyMain)),
-              Radio<WingChunStyle>(
-                value: WingChunStyle.sifu,
-                groupValue: widget.style,
-                activeColor: mainRed,
-                onChanged: changeWCStyle,
+              Text('Style de réactions',
+                  style: TextStyle(
+                      fontFamily: familyMain, color: mainRed, fontSize: 16.0)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Sifu Style', style: TextStyle(fontFamily: familyMain)),
+                  Radio<WingChunStyle>(
+                    value: WingChunStyle.sifu,
+                    groupValue: widget.style,
+                    activeColor: mainRed,
+                    onChanged: changeWCStyle,
+                  ),
+                  Text('Dai Sihing Style',
+                      style: TextStyle(fontFamily: familyMain)),
+                  Radio<WingChunStyle>(
+                    value: WingChunStyle.daisihing,
+                    groupValue: widget.style,
+                    activeColor: mainRed,
+                    onChanged: changeWCStyle,
+                  ),
+                ],
               ),
-              Text('Dai Sihing Style',
-                  style: TextStyle(fontFamily: familyMain)),
-              Radio<WingChunStyle>(
-                value: WingChunStyle.daisihing,
-                groupValue: widget.style,
-                activeColor: mainRed,
-                onChanged: changeWCStyle,
+            ],
+          ),
+        ),
+        Divider(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Style Audio',
+                  style: TextStyle(
+                      fontFamily: familyMain, color: mainRed, fontSize: 16.0)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Français', style: TextStyle(fontFamily: familyMain)),
+                  Radio<String>(
+                    value: 'french',
+                    groupValue: widget.lang,
+                    activeColor: mainRed,
+                    onChanged: changeAudioStyle,
+                  ),
+                  Text('Cantonais', style: TextStyle(fontFamily: familyMain)),
+                  Radio<String>(
+                    value: 'cantonese',
+                    groupValue: widget.lang,
+                    activeColor: mainRed,
+                    onChanged: changeAudioStyle,
+                  ),
+                ],
               ),
             ],
           ),

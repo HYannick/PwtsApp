@@ -39,6 +39,7 @@ class _StanceTrainingState extends State<StanceTraining> {
   int _counter = 0;
   int _countdownTime = 3;
 
+  String _lang = 'french';
   bool _enableThemeSong = true;
   WingChunStyle _wcStyle = WingChunStyle.daisihing;
 
@@ -69,6 +70,7 @@ class _StanceTrainingState extends State<StanceTraining> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isThemeSongEnabled = prefs.getBool('themeSong');
     final int wingChunStyle = prefs.getInt('wcStyle');
+    final String audioStyle = prefs.getString('audioStyle');
 
     if (isThemeSongEnabled != null) {
       _enableThemeSong = isThemeSongEnabled;
@@ -76,15 +78,20 @@ class _StanceTrainingState extends State<StanceTraining> {
     if (wingChunStyle != null) {
       _wcStyle = WingChunStyle.values[wingChunStyle];
     }
+    if (audioStyle != null) {
+      _lang = audioStyle;
+    }
   }
 
-  void _updateOptions({style, enableThemeSong}) async {
+  void _updateOptions({style, enableThemeSong, audioStyle}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('themeSong', enableThemeSong);
     await prefs.setInt('wcStyle', WingChunStyle.values.indexOf(style));
+    await prefs.setString('audioStyle', audioStyle);
     setState(() {
       _enableThemeSong = enableThemeSong;
       _wcStyle = style;
+      _lang = audioStyle;
     });
   }
 
@@ -142,7 +149,7 @@ class _StanceTrainingState extends State<StanceTraining> {
       _selectedStance = stances.getRandomStance(stances: filteredStances);
       _counter++;
     });
-    _stanceAudio = await _player.play(_selectedStance.audio);
+    _stanceAudio = await _player.play('audio/$_lang/${_selectedStance.audio}');
   }
 
   void _stopCounter() {
@@ -222,6 +229,7 @@ class _StanceTrainingState extends State<StanceTraining> {
                             builder: (_) => OptionsModal(
                                 enableThemeSong: _enableThemeSong,
                                 style: _wcStyle,
+                                lang: _lang,
                                 updateOptions: _updateOptions));
                       },
                       child: buildSettingsBtn(),

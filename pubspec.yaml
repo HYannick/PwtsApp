@@ -55,15 +55,24 @@ flutter:
     - assets/brush_trace_bottom.svg
     - assets/go_bg.svg
     - assets/settings-icon.svg
-    - assets/audio/bong_sau.mp3
-    - assets/audio/fuk_sau.mp3
-    - assets/audio/gam_sau.mp3
-    - assets/audio/gaang_sau.mp3
-    - assets/audio/kau_sau.mp3
-    - assets/audio/kwan_sau.mp3
-    - assets/audio/paak_sau.mp3
-    - assets/audio/taan_sau.mp3
-    - assets/audio/zam_sau.mp3
+    - assets/audio/cantonese/bong_sau.mp3
+    - assets/audio/cantonese/fuk_sau.mp3
+    - assets/audio/cantonese/gam_sau.mp3
+    - assets/audio/cantonese/gaang_sau.mp3
+    - assets/audio/cantonese/kau_sau.mp3
+    - assets/audio/cantonese/kwan_sau.mp3
+    - assets/audio/cantonese/paak_sau.mp3
+    - assets/audio/cantonese/taan_sau.mp3
+    - assets/audio/cantonese/zam_sau.mp3
+    - assets/audio/french/bong_sau.mp3
+    - assets/audio/french/fuk_sau.mp3
+    - assets/audio/french/gam_sau.mp3
+    - assets/audio/french/gaang_sau.mp3
+    - assets/audio/french/kau_sau.mp3
+    - assets/audio/french/kwan_sau.mp3
+    - assets/audio/french/paak_sau.mp3
+    - assets/audio/french/taan_sau.mp3
+    - assets/audio/french/zam_sau.mp3
     - assets/audio/theme_ip.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
